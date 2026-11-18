@@ -1,0 +1,33 @@
+# Environment secrets
+.env
+.env.backup
+*.env.local
+
+# Log files
+*.log
+error_log
+php_errors.log
+
+# Caches and temporary directories
+nexvora_cache/
+scratch/
+temp/
+tmp/
+
+# IDE and OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vendor
+vendor/
+
+# Phan chia thanh vien
+1_Son_Auth_Layout/
+2_VietAnh_Home_Category/
+3_Nam_Product_Detail_Review/
+4_QuocAnh_Cart_Checkout/
+5_Quan_Payment_Sepay_Return/
+6_Tuan_Admin_Dashboard/
+PhanCong_6_Thanh_Vien/

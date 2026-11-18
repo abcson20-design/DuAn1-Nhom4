@@ -1,0 +1,947 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Cổng thanh toán trực tuyến SePay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="slurp" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="duckduckbot" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="baiduspider" content="noindex, nofollow, noarchive, nosnippet">
+    <link href="https://pay-sandbox.sepay.vn/dist/css/light.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pay-sandbox.sepay.vn/assets/notyf/notyf.min.css">
+    <link rel="shortcut icon" href="https://pay-sandbox.sepay.vn/assets/images/favicon.png" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://pay-sandbox.sepay.vn/assets/font/bootstrap-icons.css">
+
+    <style>
+        @keyframes spinner {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.15;
+            }
+        }
+        
+        .animate-spinner {
+            animation: spinner 1.2s linear infinite;
+            background-color: currentColor;
+            height: 8%;
+            left: -10%;
+            position: absolute;
+            top: -3.9%;
+            width: 24%;
+        }
+        
+        .animate-spinner:first-child {
+            animation-delay: -1.2s;
+            transform: rotate(0.0001deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(2) {
+            animation-delay: -1.1s;
+            transform: rotate(30deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(3) {
+            animation-delay: -1s;
+            transform: rotate(60deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(4) {
+            animation-delay: -0.9s;
+            transform: rotate(90deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(5) {
+            animation-delay: -0.8s;
+            transform: rotate(120deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(6) {
+            animation-delay: -0.7s;
+            transform: rotate(150deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(7) {
+            animation-delay: -0.6s;
+            transform: rotate(180deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(8) {
+            animation-delay: -0.5s;
+            transform: rotate(210deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(9) {
+            animation-delay: -0.4s;
+            transform: rotate(240deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(10) {
+            animation-delay: -0.3s;
+            transform: rotate(270deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(11) {
+            animation-delay: -0.2s;
+            transform: rotate(300deg) translate(146%);
+        }
+        
+        .animate-spinner:nth-child(12) {
+            animation-delay: -0.1s;
+            transform: rotate(330deg) translate(146%);
+        }
+    </style>
+</head>
+<body class="bg-muted">
+            <div class="alert alert-warning position-fixed top-0 end-0 w-100 text-sm text-center" style="z-index: 99999;">
+            <div class="alert-message py-2">
+                <i class="fa fa-flask me-1"></i> Bạn đang ở chế độ thử nghiệm            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center min-vh-100 py-5 px-3">
+        <div class="d-flex flex-column gap-2 w-100">
+            <div class="d-flex align-items-center justify-content-center text-center mb-4">
+                                    <p class="mb-0 fw-bold">Lê Văn Sơn</p>
+                            </div>
+
+            <div class="card mx-auto" style="width: 28rem; max-width: 100%; display: none;" data-state="loading">
+                <div class="card-body py-5">
+                    <div class="mx-auto text-muted mb-2" style="width: 24px; height: 24px;">
+                        <div style="position: relative; top: 50%; left: 50%; width: 100%; height: 100%;">
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                    </div>
+                    </div>
+                    <p class="text-muted fw-bold text-lg title text-center mb-0">Đang tải...</p>
+                </div>
+            </div>
+            
+            <div class="card mx-auto" style="width: 28rem; max-width: 100%; display: none;" data-state="pending">
+                <div class="card-body py-5">
+                    <div class="mx-auto text-primary mb-2" style="width: 24px; height: 24px;">
+                        <div style="position: relative; top: 50%; left: 50%; width: 100%; height: 100%;">
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                            <div class="animate-spinner rounded-lg"></div>
+                                                    </div>
+                    </div>
+                    
+                    <p class="text-primary fw-bold text-lg title text-center">Đang xử lý...</p>
+                    <p class="text-muted text-center message mb-0">Vui lòng giữ cửa sổ này đến khi quá trình hoàn tất</p>
+                </div>
+            </div>
+            
+            <div class="card mx-auto" style="width: 28rem; max-width: 100%; display: none;" data-state="error">
+                <div class="card-body py-5">
+                    <div class="d-flex justify-content-center mb-2">
+                        <svg data-testid="geist-icon" stroke-linejoin="round" viewBox="0 0 16 16" class="text-danger" style="width: 24px; height: 24px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.3934 0.292893C4.58094 0.105357 4.83529 0 5.10051 0H10.8995C11.1647 0 11.4191 0.105357 11.6066 0.292893L15.7071 4.3934C15.8946 4.58093 16 4.83529 16 5.10051V10.8995C16 11.1647 15.8946 11.4191 15.7071 11.6066L11.6066 15.7071C11.4191 15.8946 11.1647 16 10.8995 16H5.10051C4.83529 16 4.58094 15.8946 4.3934 15.7071L0.292894 11.6066C0.105357 11.4191 0 11.1647 0 10.8995V5.10051C0 4.83529 0.105357 4.58094 0.292893 4.3934L4.3934 0.292893ZM8.75 3.75V4.5V8L8.75 8.75H7.25V8V4.5V3.75H8.75ZM8 12C8.55229 12 9 11.5523 9 11C9 10.4477 8.55229 10 8 10C7.44772 10 7 10.4477 7 11C7 11.5523 7.44772 12 8 12Z" fill="currentColor"></path></svg>
+                    </div>
+                    
+                    <p class="text-danger fw-bold text-lg title text-center">Lỗi không xác định</p>
+                    <p class="text-muted text-center message">Đã có lỗi xảy ra trong quá trình thực hiện</p>
+
+                                            <div class="mt-2 d-flex justify-content-center">
+                            <a href="http&#x3A;&#x2F;&#x2F;localhost&#x2F;D&#x25;E1&#x25;BB&#x25;B0&#x25;20&#x25;C3&#x25;81N&#x25;201&#x2F;BanHangOnline&#x2F;index.php&#x3F;url&#x3D;payment&#x2F;sepay&#x2F;error&amp;ref&#x3D;TEST1794712333" class="btn btn-light">
+                                <svg data-testid="geist-icon" stroke-linejoin="round" viewBox="0 0 16 16" style="width: 14px; height: 14px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.46966 13.7803L6.99999 14.3107L8.06065 13.25L7.53032 12.7197L3.56065 8.75001H14.25H15V7.25001H14.25H3.56065L7.53032 3.28034L8.06065 2.75001L6.99999 1.68935L6.46966 2.21968L1.39644 7.2929C1.00592 7.68342 1.00592 8.31659 1.39644 8.70711L6.46966 13.7803Z" fill="currentColor"></path></svg>
+                                Trở về nhà bán hàng                            </a>
+                        </div>
+                                    </div>
+            </div>
+
+            <div class="card mx-auto" style="width: 28rem; max-width: 100%; display: none;" data-state="success">
+                <div class="card-body py-5">
+                    <div class="d-flex justify-content-center mb-2">
+                        <svg data-testid="geist-icon" stroke-linejoin="round" viewBox="0 0 16 16" class="text-success" style="width: 24px; height: 24px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM11.5303 6.53033L12.0607 6L11 4.93934L10.4697 5.46967L6.5 9.43934L5.53033 8.46967L5 7.93934L3.93934 9L4.46967 9.53033L5.96967 11.0303C6.26256 11.3232 6.73744 11.3232 7.03033 11.0303L11.5303 6.53033Z" fill="currentColor"></path></svg>
+                    </div>
+                    
+                    <p class="text-success fw-bold text-lg title text-center">Thành công</p>
+                    <p class="text-muted text-center message">Đã thực hiện thành công</p>
+
+                                            <div class="mt-2 d-flex justify-content-center">
+                            <a href="http&#x3A;&#x2F;&#x2F;localhost&#x2F;D&#x25;E1&#x25;BB&#x25;B0&#x25;20&#x25;C3&#x25;81N&#x25;201&#x2F;BanHangOnline&#x2F;index.php&#x3F;url&#x3D;payment&#x2F;sepay&#x2F;success&amp;ref&#x3D;TEST1794712333" class="btn btn-light">
+                                <svg data-testid="geist-icon" stroke-linejoin="round" viewBox="0 0 16 16" style="width: 14px; height: 14px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.46966 13.7803L6.99999 14.3107L8.06065 13.25L7.53032 12.7197L3.56065 8.75001H14.25H15V7.25001H14.25H3.56065L7.53032 3.28034L8.06065 2.75001L6.99999 1.68935L6.46966 2.21968L1.39644 7.2929C1.00592 7.68342 1.00592 8.31659 1.39644 8.70711L6.46966 13.7803Z" fill="currentColor"></path></svg>
+                                Trở về nhà bán hàng                            </a>
+                        </div>
+                                    </div>
+            </div>
+            
+                            <style>
+.qr-container {
+    position: relative;
+    display: inline-block;
+}
+
+.qr-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #007bff;
+    animation: qr-corner-zoom 0.8s ease-in-out infinite;
+}
+
+.qr-corner-tl {
+    top: 10px;
+    left: 10px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.qr-corner-tr {
+    top: 10px;
+    right: 10px;
+    border-left: none;
+    border-bottom: none;
+}
+
+.qr-corner-bl {
+    bottom: 10px;
+    left: 10px;
+    border-right: none;
+    border-top: none;
+}
+
+.qr-corner-br {
+    bottom: 10px;
+    right: 10px;
+    border-left: none;
+    border-top: none;
+}
+
+.qr-corner-tr {
+    animation: qr-corner-zoom-tr 0.8s ease-in-out infinite;
+}
+
+.qr-corner-bl {
+    animation: qr-corner-zoom-bl 0.8s ease-in-out infinite;
+}
+
+.qr-corner-br {
+    animation: qr-corner-zoom-br 0.8s ease-in-out infinite;
+}
+.qr-corner-tl {
+    animation: qr-corner-zoom-tl 0.8s ease-in-out infinite;
+}
+
+.qr-corner-tr {
+    animation: qr-corner-zoom-tr 0.8s ease-in-out infinite;
+}
+
+.qr-corner-bl {
+    animation: qr-corner-zoom-bl 0.8s ease-in-out infinite;
+}
+
+.qr-corner-br {
+    animation: qr-corner-zoom-br 0.8s ease-in-out infinite;
+}
+
+.qr-scanner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #cce7ff, #007bff, #cce7ff);
+    animation: qr-scan 1.5s linear infinite alternate;
+    box-shadow: 0 0 10px #87ceeb, 0 0 20px #87ceeb, 0 0 30px #87ceeb;
+}
+
+@keyframes qr-scan {
+    0% {
+        top: 0;
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        top: calc(100% - 3px);
+        opacity: 1;
+    }
+}
+
+@keyframes qr-corner-zoom-tl {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    50% {
+        transform: translateX(-2px) translateY(-2px);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+@keyframes qr-corner-zoom-tr {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    50% {
+        transform: translateX(2px) translateY(-2px);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+@keyframes qr-corner-zoom-bl {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    50% {
+        transform: translateX(-2px) translateY(2px);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+@keyframes qr-corner-zoom-br {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    50% {
+        transform: translateX(2px) translateY(2px);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+</style>
+
+    <div class="main-card mx-auto mb-4" style="max-width: 100%; width: 54rem;">
+        <div class="row g-4">
+            <div class="col-lg-4 order-2 order-lg-1">
+                <div class="card mb-0">
+                    <div class="card-header pb-0">
+                        <h5 class="card-title mb-0">
+                            Thông tin đơn hàng                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="mb-0">
+                            <div class="mb-3">
+                                <dt class="mb-1">Mã đơn hàng</dt>
+                                <dd class="mb-0 fw-bold">TEST1794712333</dd>
+                            </div>
+                            <div class="mb-3">
+                                <dt class="mb-1">Mô tả đơn hàng</dt>
+                                <dd class="mb-0 text-muted fw-bold">Thanh toan don TEST</dd>
+                            </div>
+                            <div>
+                                <dt class="mb-1">Số tiền</dt>
+                                <dd class="mb-0 fw-bold fs-4 text-primary">100.000 đ</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+                            </div>
+
+            <div class="col-lg-8 order-1 order-lg-2">
+                <div class="card mb-0">
+                    <div class="card-body">
+                                                    <p class="fw-bold text-lg title text-center mb-2">Quét QR để thanh toán</p>
+
+                            <small class="text-muted text-center d-block mb-3">
+                                Sử dụng ứng dụng ngân hàng/ví điện tử hỗ trợ VietQR để quét mã QR và thanh toán nhanh chóng.                            </small>
+                                                
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <div class="qr-container p-3 mb-2" style="position: relative;">
+                                <div class="p-2 bg-light" style="width: 10rem; aspect-ratio: 1;">
+                                    <img src="https://pay-sandbox.sepay.vn/assets/images/other/skeleton-qr.png" class="qrcode" style="width: 100%; max-width: 100%;" />
+                                </div>
+                                                                    <div class="qr-scanner"></div>
+                                                                <div class="qr-corner qr-corner-tl"></div>
+                                <div class="qr-corner qr-corner-tr"></div>
+                                <div class="qr-corner qr-corner-bl"></div>
+                                <div class="qr-corner qr-corner-br"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                
+
+<button type="button"
+        class="btn btn-sm btn-outline-primary rounded d-inline-flex align-items-center gap-1"
+        data-qr-download
+        data-qr-url="https&#x3A;&#x2F;&#x2F;pay-sandbox.sepay.vn&#x2F;assets&#x2F;images&#x2F;other&#x2F;skeleton-qr.png"
+        data-qr-filename="qr-sepay.png">
+    <i class="bi bi-download"></i>
+    Tải mã QR</button>
+                            </div>
+
+                            <div class="row w-100">
+                                <div class="col-12 col-sm-9 mx-auto">
+                                    <ul class="list-group list-group-flush w-100">
+                                        <li class="list-group-item px-0 border-light">
+                                            <span class="d-flex align-items-center gap-2">
+                                                                                                    <i class="bi bi-bank text-secondary fs-4"></i>
+                                                                                                                                                <span>Ngân hàng giả lập ACMEBank</span>
+                                            </span>
+                                        </li>
+                                                                                <li class="list-group-item px-0 border-light">
+                                            <span class="text-muted">Số tài khoản</span><br>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="account-number">SBPAY9583207461</span>
+                                                <button class="btn btn-sm btn-light rounded" onclick="copyToClipboard('SBPAY9583207461', this)">
+                                                    <i class="bi bi-copy"></i>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item px-0 border-light">
+                                            <span class="text-muted">Nội dung chuyển khoản</span><br>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="remark">
+                                                    PAY124356AF923103ED91                                                </span>
+                                                <button class="btn btn-sm btn-light rounded" onclick="copyToClipboard('PAY124356AF923103ED91', this)">
+                                                    <i class="bi bi-copy"></i>
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                                                            <button class="btn btn-success mt-3 btn-block w-100" id="btn-simulate-payment"><i class="bi bi-qr-code-scan"></i> Giả lập thanh toán</button>
+                            
+                                                            <div class="mt-3 d-flex justify-content-center">
+                                    <button type="button" class="btn-link link-secondary d-inline-flex align-items-center gap-1 text-sm border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#cancelTransactionModal">
+                                        <i class="bi bi-x-lg"></i>
+                                        Hủy giao dịch                                    </button>
+                                </div>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+<div class="modal fade" id="cancelTransactionModal" tabindex="-1" aria-labelledby="cancelTransactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+            </div>
+            <div class="modal-body pt-3 text-center">
+                <i class="bi bi-exclamation-triangle-fill text-warning mb-3" style="font-size: 2rem;"></i>
+                <p class="mt-2 fw-bold">Bạn có chắc chắn muốn hủy giao dịch này không?</p>
+                <p class="text-muted mb-0">Hành động này sẽ chuyển hướng bạn về lại nhà bán hàng</p>
+            </div>
+            <div class="modal-footer border-0 pt-2 bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Quay lại                </button>
+                <a href="http://localhost/D%E1%BB%B0%20%C3%81N%201/BanHangOnline/index.php?url=payment/sepay/cancel&amp;ref=TEST1794712333" class="btn btn-danger">
+                    Hủy giao dịch                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+                        
+                                                                                    <nav class="d-flex justify-content-center align-items-center gap-2 w-100 mb-2"
+                     aria-label="Ch&#x1ECD;n&#x20;ng&#xF4;n&#x20;ng&#x1EEF;&#x20;hi&#x1EC3;n&#x20;th&#x1ECB;">
+                    <i class="bi bi-globe2 text-muted" aria-hidden="true"></i>
+                    <div class="btn-group btn-group-sm">
+                                                                                    <span class="btn btn-primary" aria-current="true" lang="vi">
+                                    Tiếng Việt                                </span>
+                                                                                                                <a class="btn btn-outline-primary" href="https&#x3A;&#x2F;&#x2F;pay-sandbox.sepay.vn&#x2F;v1&#x2F;checkout&#x3F;merchant&#x3D;SP-TEST-LV54773B&amp;payment_method&#x3D;BANK_TRANSFER&amp;operation&#x3D;PURCHASE&amp;order_id&#x3D;PAY124356AF923103ED91&amp;order_description&#x3D;Thanh&#x2B;toan&#x2B;don&#x2B;TEST&amp;order_amount&#x3D;100000&amp;currency&#x3D;VND&amp;order_invoice_number&#x3D;TEST1794712333&amp;success_url&#x3D;http&#x25;3A&#x25;2F&#x25;2Flocalhost&#x25;2FD&#x25;25E1&#x25;25BB&#x25;25B0&#x25;2520&#x25;25C3&#x25;2581N&#x25;25201&#x25;2FBanHangOnline&#x25;2Findex.php&#x25;3Furl&#x25;3Dpayment&#x25;2Fsepay&#x25;2Fsuccess&#x25;26ref&#x25;3DTEST1794712333&amp;error_url&#x3D;http&#x25;3A&#x25;2F&#x25;2Flocalhost&#x25;2FD&#x25;25E1&#x25;25BB&#x25;25B0&#x25;2520&#x25;25C3&#x25;2581N&#x25;25201&#x25;2FBanHangOnline&#x25;2Findex.php&#x25;3Furl&#x25;3Dpayment&#x25;2Fsepay&#x25;2Ferror&#x25;26ref&#x25;3DTEST1794712333&amp;cancel_url&#x3D;http&#x25;3A&#x25;2F&#x25;2Flocalhost&#x25;2FD&#x25;25E1&#x25;25BB&#x25;25B0&#x25;2520&#x25;25C3&#x25;2581N&#x25;25201&#x25;2FBanHangOnline&#x25;2Findex.php&#x25;3Furl&#x25;3Dpayment&#x25;2Fsepay&#x25;2Fcancel&#x25;26ref&#x25;3DTEST1794712333&amp;trace_id&#x3D;SP-TEST-LV54773B-6AF923105DC53034373214&amp;branch_code&#x3D;001&amp;branch_terminal_code&#x3D;01&amp;choose_payment_method&#x3D;0&amp;timestamp&#x3D;1794712336&amp;signature&#x3D;8mnQ1owjjSLnyheFgZUEvduuqbufBfe9BL81PoT0RAU&#x25;3D&amp;lang&#x3D;en"
+                                   lang="en" hreflang="en">
+                                    English                                </a>
+                                                                        </div>
+                </nav>
+            
+            <div class="d-flex justify-content-center align-items-center text-muted w-100 text-sm gap-1">
+                Cung cấp bởi                <a href="https://sepay.vn" target="_blank"><img src="https://sepay.vn/assets/img/logo/sepay-blue-154x50.png" style="height: 1.2rem;"></a>
+                đối tác của            </div>
+            <div class="d-flex justify-content-center align-items-center text-muted w-100 text-sm gap-1">
+                                    <div style="height: 1.5rem;" class="rounded-lg px-1 bg-light d-flex align-items-center justify-content-center"><img src="https://pay-sandbox.sepay.vn/assets/images/other/vpbank.png" style="height: 1rem;"></div>
+                    <div style="height: 1.5rem;" class="rounded-lg px-1 bg-light d-flex align-items-center justify-content-center"><img src="https://pay-sandbox.sepay.vn/assets/images/other/mastercard.png" style="height: 1rem;"></div>
+                    <div style="height: 1.5rem;" class="rounded-lg px-1 bg-light d-flex align-items-center justify-content-center"><img src="https://pay-sandbox.sepay.vn/assets/images/other/napas.png" style="height: 0.8rem;"></div>
+                            </div>
+        </div>
+    </div>
+
+        <script>
+        window.SEPAY_I18N = {"paidTitle":"Thanh toán thành công","paidMessage":"Đơn hàng của bạn đã hoàn tất thanh toán.","paidRedirecting":"Đơn hàng của bạn đã hoàn tất thanh toán, đang chuyển hướng...","verifiedTitle":"Xác thực thành công","verifiedMessage":"Phiên xác thực đã hoàn tất thanh toán.","sessionUnavailableTitle":"Phiên không khả dụng","sessionUnavailableMessage":"Phiên thanh toán đã bị hủy hoặc hết hạn.","sessionCancelledTitle":"Phiên đã bị hủy","paymentCancelled":"Phiên thanh toán đã bị hủy bỏ.","verificationCancelled":"Phiên xác thực đã bị hủy bỏ.","genericErrorTitle":"Đã có lỗi xảy ra","methodUnavailable":"Phương thức thanh toán không khả dụng. Vui lòng thử lại.","downloading":"Đang tải","qrToPngFailed":"Không thể chuyển ảnh QR sang PNG.","qrReadFailed":"Không thể đọc ảnh QR.","qrFetchFailed":"Không tải được ảnh QR.","sandboxExpiredCard":"Thẻ đã hết hạn.","sandboxInvalidExpiry":"Vui lòng nhập ngày hết hạn hợp lệ.","mpgsInvalidRequest":"Yêu cầu không hợp lệ.","mpgsServerBusy":"Hệ thống đang bận.","mpgsServerFailed":"Đã có lỗi xảy ra trong quá trình thanh toán.","mpgsConstraintViolation":"Yêu cầu vi phạm ràng buộc.","mpgsRequestRejected":"Yêu cầu bị từ chối.","mpgsUnknown":"Lỗi không xác định."};
+    </script>
+    <script src="https://pay-sandbox.sepay.vn/assets/js/jquery-3.5.1.js"></script>
+    <script src="https://pay-sandbox.sepay.vn/assets/notyf/notyf.min.js"></script>
+    <script src="https://pay-sandbox.sepay.vn/assets/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        var notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+        })
+        
+        const SUCCESS_URL = "http\x3A\x2F\x2Flocalhost\x2FD\x25E1\x25BB\x25B0\x2520\x25C3\x2581N\x25201\x2FBanHangOnline\x2Findex.php\x3Furl\x3Dpayment\x2Fsepay\x2Fsuccess\x26ref\x3DTEST1794712333";
+        const ERROR_URL = "http\x3A\x2F\x2Flocalhost\x2FD\x25E1\x25BB\x25B0\x2520\x25C3\x2581N\x25201\x2FBanHangOnline\x2Findex.php\x3Furl\x3Dpayment\x2Fsepay\x2Ferror\x26ref\x3DTEST1794712333";
+        const CANCEL_URL = "http\x3A\x2F\x2Flocalhost\x2FD\x25E1\x25BB\x25B0\x2520\x25C3\x2581N\x25201\x2FBanHangOnline\x2Findex.php\x3Furl\x3Dpayment\x2Fsepay\x2Fcancel\x26ref\x3DTEST1794712333";
+        const CURRENT_URL = "https\x3A\x2F\x2Fpay\x2Dsandbox.sepay.vn\x2Fv1\x2Fcheckout\x3Fmerchant\x3DSP\x2DTEST\x2DLV54773B\x26payment_method\x3DBANK_TRANSFER\x26operation\x3DPURCHASE\x26order_id\x3DPAY124356AF923103ED91\x26order_description\x3DThanh\x2Btoan\x2Bdon\x2BTEST\x26order_amount\x3D100000\x26currency\x3DVND\x26order_invoice_number\x3DTEST1794712333\x26success_url\x3Dhttp\x253A\x252F\x252Flocalhost\x252FD\x2525E1\x2525BB\x2525B0\x252520\x2525C3\x252581N\x2525201\x252FBanHangOnline\x252Findex.php\x253Furl\x253Dpayment\x252Fsepay\x252Fsuccess\x2526ref\x253DTEST1794712333\x26error_url\x3Dhttp\x253A\x252F\x252Flocalhost\x252FD\x2525E1\x2525BB\x2525B0\x252520\x2525C3\x252581N\x2525201\x252FBanHangOnline\x252Findex.php\x253Furl\x253Dpayment\x252Fsepay\x252Ferror\x2526ref\x253DTEST1794712333\x26cancel_url\x3Dhttp\x253A\x252F\x252Flocalhost\x252FD\x2525E1\x2525BB\x2525B0\x252520\x2525C3\x252581N\x2525201\x252FBanHangOnline\x252Findex.php\x253Furl\x253Dpayment\x252Fsepay\x252Fcancel\x2526ref\x253DTEST1794712333\x26trace_id\x3DSP\x2DTEST\x2DLV54773B\x2D6AF923105DC53034373214\x26branch_code\x3D001\x26branch_terminal_code\x3D01\x26choose_payment_method\x3D0\x26timestamp\x3D1794712336\x26signature\x3D8mnQ1owjjSLnyheFgZUEvduuqbufBfe9BL81PoT0RAU\x253D";
+        const TRACE_ID = "SP\x2DTEST\x2DLV54773B\x2D6AF923105DC53034373214";
+        const INVALID_SESSION = false;
+        let SESSION_STATUS = "PENDING";
+        const ENV = "sandbox";
+        const WEBSOCKET_BASE_URL = "wss\x3A\x2F\x2Fpay\x2Devents.sepay.vn";
+        
+        function displayErrorCard(title = null, message = null) {
+            if (title) $('.card[data-state="error"] .title').text(title);
+            if (message) $('.card[data-state="error"] .message').text(message);
+            displayCard('error')
+        }
+        
+        function displaySuccessCard(title, message) {
+            $('.card[data-state="success"] .title').text(title);
+            $('.card[data-state="success"] .message').text(message);
+            displayCard('success')
+        }
+        
+        function displayPendingCard(title, message) {
+            $('.card[data-state="pending"] .title').text(title);
+            $('.card[data-state="pending"] .message').text(message);
+            displayCard('pending')
+        }
+        
+        function displayLoadingCard() {
+            displayCard('loading')
+        }
+        
+        function displayCard(state) {
+            $('.main-card').hide();
+            $(`.card:not([data-state="${state}"])`).hide();
+            $(`.card[data-state="${state}"]`).show()
+        }
+
+        function copyToClipboard(text, buttonElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const button = buttonElement;
+                const originalContent = button.innerHTML;
+                
+                button.innerHTML = '<i class="bi bi-check"></i>';
+                button.classList.add('btn-success');
+                button.classList.remove('btn-outline-primary');
+                button.disabled = true;
+                
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-outline-primary');
+                    button.disabled = false;
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const button = buttonElement;
+                const originalContent = button.innerHTML;
+                
+                button.innerHTML = '<i class="bi bi-check"></i>';
+                button.classList.add('btn-success');
+                button.classList.remove('btn-outline-primary');
+                button.disabled = true;
+                
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-outline-primary');
+                    button.disabled = false;
+                }, 2000);
+            });
+        }
+
+        // Sync poller — visibility-aware, exponential backoff on transient errors.
+        // Fixes: Safari iOS aborts in-flight AJAX when tab goes background, which
+        // previously hit the error callback immediately and left the UI dead.
+        function createSyncPoller(options) {
+            const baseInterval = options.intervalMs || 3000;
+            const maxRetries = options.maxRetries || 5;
+            const maxBackoff = options.maxBackoff || 60000;
+
+            const state = {
+                timer: null,
+                xhr: null,
+                retries: 0,
+                running: false,
+                visibilityAttached: false,
+            };
+
+            function clearTimer() {
+                if (state.timer) {
+                    clearTimeout(state.timer);
+                    state.timer = null;
+                }
+            }
+
+            function abortInFlight() {
+                if (state.xhr && state.xhr.readyState !== 4) {
+                    try { state.xhr.abort(); } catch (e) {}
+                }
+                state.xhr = null;
+            }
+
+            function backoffDelay() {
+                return Math.min(baseInterval * Math.pow(2, state.retries), maxBackoff);
+            }
+
+            function schedule(delay) {
+                clearTimer();
+                state.timer = setTimeout(tick, delay);
+            }
+
+            function tick() {
+                clearTimer();
+                abortInFlight();
+                if (!state.running || (typeof document.hidden === 'boolean' && document.hidden)) return;
+
+                const searchParams = new URLSearchParams(window.location.search);
+
+                state.xhr = $.ajax({
+                    method: 'POST',
+                    url: options.url + '?' + searchParams,
+                    success: (response) => {
+                        state.xhr = null;
+                        state.retries = 0;
+                        const verdict = options.onResponse ? options.onResponse(response) : 'continue';
+                        if (verdict === 'stop') return;
+                        if (state.running) schedule(baseInterval);
+                    },
+                    error: (xhr) => {
+                        state.xhr = null;
+                        const isTransient = xhr.status === 0 || xhr.statusText === 'abort' || xhr.statusText === 'timeout';
+                        if (isTransient && state.retries < maxRetries) {
+                            state.retries++;
+                            if (state.running) schedule(backoffDelay());
+                            return;
+                        }
+                        if (options.onTerminalError) options.onTerminalError(xhr);
+                    }
+                });
+            }
+
+            function attachVisibilityHandler() {
+                if (state.visibilityAttached) return;
+                state.visibilityAttached = true;
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        abortInFlight();
+                        clearTimer();
+                    } else if (state.running) {
+                        state.retries = 0;
+                        tick();
+                    }
+                });
+            }
+
+            return {
+                start() {
+                    state.running = true;
+                    attachVisibilityHandler();
+                    tick();
+                },
+                stop() {
+                    state.running = false;
+                    abortInFlight();
+                    clearTimer();
+                },
+                kick() {
+                    state.retries = 0;
+                    if (state.running) tick();
+                    else this.start();
+                }
+            };
+        }
+    </script>
+    <script>
+    const ORDER_ID = `PAY124356AF923103ED91`;
+    const OPERATION = `PURCHASE`;
+    const ORDER_STATUS = `AUTHENTICATION_NOT_NEEDED`
+    const WEBSOCKET_CHANNEL = ``;
+
+    const syncPoller = createSyncPoller({
+        url: `https://pay-sandbox.sepay.vn/v1/checkout/sync`,
+        onResponse: (response) => {
+            if (response.order_status === 'CAPTURED') {
+                if (SUCCESS_URL) {
+                    displaySuccessCard(window.SEPAY_I18N.paidTitle, window.SEPAY_I18N.paidRedirecting)
+                    setTimeout(() => { window.location.href = SUCCESS_URL; }, 2000);
+                } else {
+                    displaySuccessCard(window.SEPAY_I18N.paidTitle, window.SEPAY_I18N.paidMessage)
+                }
+                return 'stop';
+            }
+            if (response.order_status === 'CANCELLED') {
+                window.location.reload();
+                return 'stop';
+            }
+        },
+        onTerminalError: () => {
+            displayErrorCard(window.SEPAY_I18N.sessionUnavailableTitle, window.SEPAY_I18N.sessionUnavailableMessage);
+        }
+    });
+
+    function sync() {
+        syncPoller.kick();
+    }
+
+    $(document).ready(() => {
+        if (ORDER_STATUS != 'CANCELLED' && ORDER_STATUS != 'CAPTURED') {
+
+            if (!syncRealtime()) {
+                syncPoller.start();
+            }
+
+            return
+        }
+    })
+
+    function syncRealtime()
+    {
+        if (!WEBSOCKET_CHANNEL) {
+            return false;
+        }
+
+        try {
+            const ws = new WebSocket(WEBSOCKET_BASE_URL);
+
+            ws.onopen = function(event) {
+                ws.send(JSON.stringify({
+                    action: "subscribe",
+                    channel: WEBSOCKET_CHANNEL
+                }));
+            };
+
+            ws.onmessage = function(event) {
+                const message = JSON.parse(event.data);
+
+                if (!message.ok) {
+                    return true;
+                }
+
+                if (message.data?.data && message.data.data.order_status === 'CAPTURED') {
+                    if (SUCCESS_URL) {
+                        displaySuccessCard(window.SEPAY_I18N.paidTitle, window.SEPAY_I18N.paidRedirecting)
+
+                        setTimeout(() => {
+                            window.location.href = SUCCESS_URL;
+                        }, 2000);
+                    } else {
+                        displaySuccessCard(window.SEPAY_I18N.paidTitle, window.SEPAY_I18N.paidMessage)
+                    }
+                    return;
+                }
+            };
+
+            ws.onclose = function(event) {
+                sync();
+            };
+
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+        $('#btn-simulate-payment').on('click', () => {
+        const searchParams = new URLSearchParams(window.location.search);
+
+        $.ajax({
+            method: 'POST',
+            url: `https://pay-sandbox.sepay.vn/v1/checkout/simulatePayment?` + searchParams,
+        });
+    });
+    
+    $(document).ready(function() {
+        const cancelModal = document.getElementById('cancelTransactionModal');
+        if (cancelModal) {
+            cancelModal.addEventListener('shown.bs.modal', function () {
+                const backButton = cancelModal.querySelector('[data-bs-dismiss="modal"]');
+                if (backButton) {
+                    backButton.focus();
+                }
+            });
+        }
+    });
+</script>
+<script>
+    (function () {
+        var QR_DOWNLOAD_TIMEOUT_MS = 15000;
+
+        function withParam(url, key, value) {
+            var separator = url.indexOf('?') === -1 ? '?' : '&';
+
+            return url + separator + key + '=' + encodeURIComponent(value);
+        }
+
+        function isSameOrigin(url) {
+            try {
+                return new URL(url, window.location.href).origin === window.location.origin;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // The QR image service is hosted on another origin and does not send an
+        // Access-Control-Allow-Origin header for the checkout host, so reading the
+        // bytes in JS is impossible there. ?download=true makes the service answer
+        // with Content-Disposition: attachment instead.
+        function downloadViaService(url) {
+            window.open(withParam(url, 'download', 'true'), '_blank', 'noopener,noreferrer');
+        }
+
+        function convertBlobToPng(blob) {
+            return new Promise(function (resolve, reject) {
+                var image = new Image();
+                var objectUrl = URL.createObjectURL(blob);
+
+                image.onload = function () {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = image.naturalWidth || image.width;
+                    canvas.height = image.naturalHeight || image.height;
+
+                    var context = canvas.getContext('2d');
+
+                    if (!context || !canvas.width || !canvas.height) {
+                        URL.revokeObjectURL(objectUrl);
+                        reject(new Error(window.SEPAY_I18N.qrToPngFailed));
+
+                        return;
+                    }
+
+                    context.drawImage(image, 0, 0);
+                    canvas.toBlob(function (pngBlob) {
+                        URL.revokeObjectURL(objectUrl);
+
+                        if (pngBlob) {
+                            resolve(pngBlob);
+
+                            return;
+                        }
+
+                        reject(new Error(window.SEPAY_I18N.qrToPngFailed));
+                    }, 'image/png');
+                };
+
+                image.onerror = function () {
+                    URL.revokeObjectURL(objectUrl);
+                    reject(new Error(window.SEPAY_I18N.qrReadFailed));
+                };
+
+                image.src = objectUrl;
+            });
+        }
+
+        function fetchPngBlob(url) {
+            var controller = window.AbortController ? new AbortController() : null;
+            var timer = controller
+                ? window.setTimeout(function () { controller.abort(); }, QR_DOWNLOAD_TIMEOUT_MS)
+                : null;
+            var options = controller ? { mode: 'cors', signal: controller.signal } : { mode: 'cors' };
+            var clearTimer = function () {
+                if (timer) {
+                    window.clearTimeout(timer);
+                }
+            };
+
+            return fetch(url, options).then(function (response) {
+                if (!response.ok) {
+                    throw new Error(window.SEPAY_I18N.qrFetchFailed);
+                }
+
+                return response.blob();
+            }).then(function (blob) {
+                return blob.type === 'image/png' ? blob : convertBlobToPng(blob);
+            }).then(function (blob) {
+                clearTimer();
+
+                return blob;
+            }, function (error) {
+                clearTimer();
+
+                throw error;
+            });
+        }
+
+        function saveBlob(blob, filename) {
+            var objectUrl = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+
+            link.href = objectUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(objectUrl);
+        }
+
+        $(document).on('click', '[data-qr-download]', function (event) {
+            event.preventDefault();
+
+            var $button = $(this);
+
+            if ($button.prop('disabled')) {
+                return;
+            }
+
+            var url = $button.data('qr-url');
+
+            if (!url) {
+                return;
+            }
+
+            var filename = $button.data('qr-filename') || 'qr-sepay.png';
+
+            if (!window.fetch || !isSameOrigin(url)) {
+                downloadViaService(url);
+
+                return;
+            }
+
+            var originalHtml = $button.html();
+
+            $button.prop('disabled', true).attr('aria-busy', 'true').html(
+                '<span class="spinner-border spinner-border-sm align-middle me-1" role="status" aria-hidden="true" style="width: 12px; height: 12px;"></span> ' + window.SEPAY_I18N.downloading
+            );
+
+            fetchPngBlob(url).then(function (blob) {
+                saveBlob(blob, filename);
+            }).catch(function (error) {
+                if (window.console && console.error) {
+                    console.error('[qr-download]', error);
+                }
+
+                downloadViaService(url);
+            }).then(function () {
+                $button.prop('disabled', false).removeAttr('aria-busy').html(originalHtml);
+            });
+        });
+    })();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5ab12c6fa008557',t:'MTc5NDcxMjMzNg=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5ab12c6fa008557',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
