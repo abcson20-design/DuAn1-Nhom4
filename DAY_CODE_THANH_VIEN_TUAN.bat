@@ -1,11 +1,11 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul
-title ĐẨY CODE DỰ ÁN 1 - THÀNH VIÊN (LÊ THÀNH HUY)
+title ĐẨY CODE DỰ ÁN 1 - THÀNH VIÊN (LÊ DANH TUẤN)
 echo ==============================================================
 echo   ĐẨY CODE DỰ ÁN 1 - NHÓM 4: NEXVORA PHONE STORE
-echo   Thành viên: Lê Thành Huy
-echo   Nhánh sở hữu: dev-huy
-echo   Phụ trách: Quản lý Sản phẩm, Danh mục, Thương hiệu (Catalog & Products)
+echo   Thành viên: Lê Danh Tuấn
+echo   Nhánh sở hữu: dev-tuan
+echo   Phụ trách: Lập trình Bảng điều khiển Quản trị (Admin Panel)
 echo ==============================================================
 echo.
 
@@ -15,16 +15,16 @@ git status
 echo.
 
 set /p msg="Nhập nội dung commit (Nhấn Enter để dùng mặc định): "
-if "%msg%"=="" set msg=Cap nhat module San pham, Danh muc, Thuong hieu - Le Thanh Huy
+if "%msg%"=="" set msg=Lap trinh Bang dieu khien Quan tri (Admin Panel) - Le Danh Tuan
 
 git add .
 git commit -m "%msg%"
 
-git checkout -B dev-huy
-git push -u origin dev-huy
+git checkout -B dev-tuan
+git push -u origin dev-tuan
 
 echo.
 echo ==============================================================
-echo   ĐẨY CODE THÀNH CÔNG LÊN NHÁNH dev-huy!
+echo   ĐẨY CODE THÀNH CÔNG LÊN NHÁNH dev-tuan!
 echo ==============================================================
 pause

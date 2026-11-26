@@ -1,11 +1,11 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul
 title ĐẨY CODE DỰ ÁN 1 - TRƯỞNG NHÓM (LÊ VĂN SƠN)
 echo ==============================================================
 echo   ĐẨY CODE DỰ ÁN 1 - NHÓM 4: NEXVORA PHONE STORE
 echo   Thành viên: Lê Văn Sơn (Trưởng nhóm)
-echo   Nhánh sở hữu: dev-son ^& main
-echo   Phụ trách: Kiến trúc MVC, Auth, Checkout, CSRF Security, Payment
+echo   Nhánh sở hữu: dev-son & main
+echo   Phụ trách: Dựng khung hệ thống, Xác thực tài khoản, Phân quyền & Ghép nối mã nguồn
 echo ==============================================================
 echo.
 
@@ -16,7 +16,7 @@ git status
 echo.
 
 set /p msg="Nhập nội dung commit (Nhấn Enter để dùng mặc định): "
-if "%msg%"=="" set msg=Cap nhat he thong boi Truong nhom Le Van Son
+if "%msg%"=="" set msg=Dung khung he thong, Xac thuc tai khoan, Phan quyen va Ghep noi ma nguon - Le Van Son
 
 echo [2/5] Đang thêm file vào Git...
 git add .
