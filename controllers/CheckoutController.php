@@ -9,6 +9,26 @@ class CheckoutController extends BaseController {
         }
     }
 
+    /**
+     * Lấy danh sách sản phẩm thực tế cần thanh toán:
+     * - Nếu là phiên Mua ngay: chỉ lấy món mua ngay.
+     * - Nếu từ Giỏ hàng chính: CHỈ lấy các món được tích chọn (selected = true), không lấy toàn bộ giỏ!
+     */
+    private function getCheckoutCart(): array {
+        $isBuyNow = !empty($_SESSION['is_buy_now']) && !empty($_SESSION['buy_now_item']);
+        if ($isBuyNow) {
+            return [$_SESSION['buy_now_item']];
+        }
+
+        $cart = [];
+        foreach ($_SESSION['cart'] ?? [] as $k => $item) {
+            if (!isset($item['selected']) || !empty($item['selected'])) {
+                $cart[$k] = $item;
+            }
+        }
+        return $cart;
+    }
+
     public function index(): void {
         // Phân quyền: Khách không được đặt hàng, yêu cầu đăng nhập User hoặc Admin
         $this->requireUser();
@@ -16,19 +36,7 @@ class CheckoutController extends BaseController {
         require_once __DIR__ . '/CartController.php';
         CartController::syncCartWithDatabase();
 
-        // Kiểm tra xem đây là phiên Mua ngay độc lập hay đặt từ Giỏ hàng chính
-        $isBuyNow = !empty($_SESSION['is_buy_now']) && !empty($_SESSION['buy_now_item']);
-        if ($isBuyNow) {
-            $cart = [$_SESSION['buy_now_item']];
-        } else {
-            // Shopee logic: Chỉ thanh toán các sản phẩm ĐƯỢC CHỌN (selected = true)
-            $cart = [];
-            foreach ($_SESSION['cart'] ?? [] as $k => $item) {
-                if (!isset($item['selected']) || !empty($item['selected'])) {
-                    $cart[$k] = $item;
-                }
-            }
-        }
+        $cart = $this->getCheckoutCart();
 
         if (empty($cart)) {
             $_SESSION['cart_error'] = 'Vui lòng chọn ít nhất 1 sản phẩm trong giỏ hàng để tiến hành thanh toán!';
@@ -126,12 +134,8 @@ class CheckoutController extends BaseController {
 
         $code = trim($_POST['coupon_code'] ?? '');
 
-        $isBuyNow = !empty($_SESSION['is_buy_now']) && !empty($_SESSION['buy_now_item']);
-        if ($isBuyNow) {
-            $cart = [$_SESSION['buy_now_item']];
-        } else {
-            $cart = $_SESSION['cart'] ?? [];
-        }
+        // Lấy đúng các sản phẩm đang được chọn thanh toán
+        $cart = $this->getCheckoutCart();
 
         $subtotal = 0;
         foreach ($cart as $item) {
@@ -207,8 +211,7 @@ class CheckoutController extends BaseController {
 
         if ($isAjax) {
             header('Content-Type: application/json; charset=utf-8');
-            $isBuyNow = !empty($_SESSION['is_buy_now']) && !empty($_SESSION['buy_now_item']);
-            $cart = $isBuyNow ? [$_SESSION['buy_now_item']] : ($_SESSION['cart'] ?? []);
+            $cart = $this->getCheckoutCart();
             $subtotal = 0;
             foreach ($cart as $item) {
                 $subtotal += $item['price'] * $item['quantity'];

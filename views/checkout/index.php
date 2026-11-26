@@ -524,10 +524,12 @@ function updateCouponUI(data) {
     const discRow = document.getElementById('summaryDiscountRow');
     const discVal = document.getElementById('summaryDiscountValue');
     const finalVal = document.getElementById('summaryFinalTotal');
+    const subtotalEl = document.getElementById('summarySubtotal');
 
     if (discRow) discRow.classList.remove('hidden');
     if (discVal) discVal.textContent = '-' + data.discount_formatted;
     if (finalVal) finalVal.textContent = data.final_total_formatted;
+    if (subtotalEl && data.subtotal_formatted) subtotalEl.textContent = data.subtotal_formatted;
 
     // 3. Cập nhật nút trạng thái trong modal
     const modalItems = document.querySelectorAll('[data-coupon-code]');
@@ -560,6 +562,8 @@ function resetCouponUI(data) {
     if (selectEl) selectEl.value = '';
     if (discRow) discRow.classList.add('hidden');
     if (finalVal) finalVal.textContent = data.final_total_formatted;
+    const subtotalEl = document.getElementById('summarySubtotal');
+    if (subtotalEl && data.subtotal_formatted) subtotalEl.textContent = data.subtotal_formatted;
 
     // Reset các nút trong modal
     const modalItems = document.querySelectorAll('[data-coupon-code]');
