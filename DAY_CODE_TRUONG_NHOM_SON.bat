@@ -1,40 +1,34 @@
-﻿@echo off
+@echo off
 chcp 65001 >nul
-title ĐẨY CODE DỰ ÁN 1 - TRƯỞNG NHÓM (LÊ VĂN SƠN)
+title ĐẨY CODE DỰ ÁN 1 - Lê Văn Sơn (Trưởng nhóm)
 echo ==============================================================
 echo   ĐẨY CODE DỰ ÁN 1 - NHÓM 4: NEXVORA PHONE STORE
 echo   Thành viên: Lê Văn Sơn (Trưởng nhóm)
-echo   Nhánh sở hữu: dev-son & main
+echo   Nhánh sở hữu: dev-son
 echo   Phụ trách: Dựng khung hệ thống, Xác thực tài khoản, Phân quyền & Ghép nối mã nguồn
 echo ==============================================================
 echo.
 
 cd /d "%~dp0"
+if exist "..\..\.git" cd /d "%~dp0..\.."
 
-echo [1/5] Kiểm tra trạng thái Git...
 git status
 echo.
 
 set /p msg="Nhập nội dung commit (Nhấn Enter để dùng mặc định): "
-if "%msg%"=="" set msg=Dung khung he thong, Xac thuc tai khoan, Phan quyen va Ghep noi ma nguon - Le Van Son
+if "%msg%"=="" set msg=Cap nhat Dựng khung hệ thống, Xác thực tài khoản, Phân quyền & Ghép nối mã nguồn - Lê Văn Sơn (Trưởng nhóm)
 
-echo [2/5] Đang thêm file vào Git...
 git add .
-
-echo [3/5] Đang commit code...
 git commit -m "%msg%"
 
-echo [4/5] Đang đồng bộ và đẩy lên nhánh dev-son...
 git checkout -B dev-son
 git push -u origin dev-son
 
-echo [5/5] Đang đồng bộ và đẩy lên nhánh main...
 git checkout -B main
 git merge dev-son
 git push -u origin main
-
 echo.
 echo ==============================================================
-echo   ĐẨY CODE THÀNH CÔNG LÊN NHÁNH dev-son VÀ main!
+echo   ĐẨY CODE THÀNH CÔNG LÊN NHÁNH dev-son!
 echo ==============================================================
 pause
