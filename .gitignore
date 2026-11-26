@@ -1,0 +1,24 @@
+# Environment secrets
+.env
+.env.backup
+*.env.local
+
+# Log files
+*.log
+error_log
+php_errors.log
+
+# Caches and temporary directories
+nexvora_cache/
+scratch/
+temp/
+tmp/
+
+# IDE and OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vendor
+vendor/

@@ -1,0 +1,29 @@
+# NEXVORA Security Configuration
+
+# 1. Chặn xem danh mục thư mục
+Options -Indexes
+
+# 2. Chặn truy cập trực tiếp các tệp nhạy cảm (SQL dump, Markdown, cấu hình, nhật ký...)
+<FilesMatch "(^\.|\.(sql|md|env|json|log|ini|git|bak|sh|lock|yml|yaml)$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 3. Chặn truy cập trực tiếp vào các thư mục mã nguồn nội bộ
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(config|models|views|controllers|services|sql|tests|scratch)/ - [F,L]
+</IfModule>
+
+# 4. Thiết lập bảo mật HTTP Header cơ bản
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
