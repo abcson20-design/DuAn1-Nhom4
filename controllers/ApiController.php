@@ -337,10 +337,11 @@ class ApiController extends BaseController
         // 1. Chọn / Bỏ chọn tất cả
         if (isset($_POST['select_all'])) {
             $selectAll = (bool)(int)$_POST['select_all'];
-            foreach ($_SESSION['cart'] ?? [] as &$item) {
-                $item['selected'] = $selectAll;
+            if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+                foreach ($_SESSION['cart'] as $k => $item) {
+                    $_SESSION['cart'][$k]['selected'] = $selectAll;
+                }
             }
-            unset($item);
         }
         // 2. Chọn / Bỏ chọn từng món theo key
         elseif (isset($_POST['key'])) {

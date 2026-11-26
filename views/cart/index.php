@@ -324,6 +324,22 @@ function getCartCsrfToken() {
 
 // 1. Checkbox Chọn Tất Cả
 async function cartToggleSelectAll(isChecked) {
+    // Phản hồi giao diện tức thì (Optimistic UI)
+    const headerCb = document.getElementById('checkSelectAllHeader');
+    const bottomCb = document.getElementById('checkSelectAllBottom');
+    if (headerCb) headerCb.checked = isChecked;
+    if (bottomCb) bottomCb.checked = isChecked;
+
+    document.querySelectorAll('.cart-item-checkbox').forEach(cb => {
+        cb.checked = isChecked;
+        const itemKey = cb.getAttribute('data-key');
+        const row = document.getElementById('cart-row-' + itemKey);
+        if (row) {
+            if (isChecked) row.classList.add('bg-cyan-950/10');
+            else row.classList.remove('bg-cyan-950/10');
+        }
+    });
+
     try {
         const token = getCartCsrfToken();
         const formData = new FormData();
@@ -346,18 +362,28 @@ async function cartToggleSelectAll(isChecked) {
                 title: isChecked ? 'Đã chọn tất cả sản phẩm' : 'Đã bỏ chọn tất cả'
             });
         } else {
+            syncSelectAllState();
             Toast.fire({
                 icon: 'warning',
                 title: data.message || 'Không thể cập nhật trạng thái chọn tất cả'
             });
         }
     } catch (e) {
+        syncSelectAllState();
         console.error(e);
     }
 }
 
 // 2. Checkbox Chọn Từng Món
 async function cartToggleSelectItem(key, isChecked) {
+    // Phản hồi giao diện tức thì (Optimistic UI)
+    const row = document.getElementById('cart-row-' + key);
+    if (row) {
+        if (isChecked) row.classList.add('bg-cyan-950/10');
+        else row.classList.remove('bg-cyan-950/10');
+    }
+    syncSelectAllState(); // Tự động chọn hoặc bỏ chọn checkbox "Chọn tất cả"
+
     try {
         const token = getCartCsrfToken();
         const formData = new FormData();
@@ -377,12 +403,14 @@ async function cartToggleSelectItem(key, isChecked) {
         if (data.success) {
             updateCartUI(data);
         } else {
+            syncSelectAllState();
             Toast.fire({
                 icon: 'warning',
                 title: data.message || 'Không thể cập nhật sản phẩm'
             });
         }
     } catch (e) {
+        syncSelectAllState();
         console.error(e);
     }
 }
