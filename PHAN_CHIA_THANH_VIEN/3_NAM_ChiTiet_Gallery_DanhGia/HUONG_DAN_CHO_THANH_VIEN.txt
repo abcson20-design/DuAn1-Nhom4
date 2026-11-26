@@ -1,0 +1,19 @@
+=================================================================
+  GÓI MÃ NGUỒN RIÊNG BIỆT DỰ ÁN 1 - NHÓM 4 (NEXVORA)
+=================================================================
+Thành viên phụ trách : Nam (Nguyễn Văn Nam / Vũ Đình Nam)
+Nhiệm vụ chính thức : Lập trình Chi tiết sản phẩm, Gallery ảnh & Đánh giá
+Nhánh Git sở hữu     : dev-nam
+File nhấp đẩy code   : DAY_CODE_THANH_VIEN_NAM.bat
+
+-----------------------------------------------------------------
+HƯỚNG DẪN DÀNH CHO BẠN:
+-----------------------------------------------------------------
+1. Toàn bộ các file mã nguồn (Controllers, Models, Views,...) trong
+   thư mục này là phần việc ĐỘC LẬP thuộc nhiệm vụ của bạn.
+2. Khi bạn chỉnh sửa, thêm tính năng hoặc fix bug trong phần của mình,
+   bạn chỉ cần nhấp đúp chuột vào file [DAY_CODE_THANH_VIEN_NAM.bat].
+3. Hệ thống sẽ tự động commit với tên của bạn và đẩy thẳng code lên
+   nhánh [dev-nam] trên GitHub của nhóm!
+4. Đọc chi tiết nghiệp vụ và câu hỏi vấn đáp tại file *.md đi kèm.
+=================================================================
