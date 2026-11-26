@@ -53,9 +53,11 @@ class CheckoutController extends BaseController {
         $couponModel = new Coupon();
         $currentUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
         $currentUserId = !empty($currentUser['id']) ? (int)$currentUser['id'] : null;
+        $userEmail = !empty($currentUser['email']) ? (string)$currentUser['email'] : null;
+        $userPhone = !empty($currentUser['phone']) ? (string)$currentUser['phone'] : null;
 
         if (!empty($_SESSION['applied_coupon']['code'])) {
-            $check = $couponModel->checkAndCalculate($_SESSION['applied_coupon']['code'], $subtotal, $currentUserId, $cart);
+            $check = $couponModel->checkAndCalculate($_SESSION['applied_coupon']['code'], $subtotal, $currentUserId, $cart, $userEmail, $userPhone);
             if ($check['valid']) {
                 $discount = $check['discount'];
                 $_SESSION['discount_amount'] = $discount;
@@ -71,7 +73,7 @@ class CheckoutController extends BaseController {
 
         $shipping = 0; // Phí vận chuyển mặc định: Miễn phí (0đ)
         $finalTotal = max(0, $subtotal - $discount + $shipping);
-        $availableCoupons = $couponModel->getAvailableCoupons($subtotal, $currentUserId, $cart);
+        $availableCoupons = $couponModel->getAvailableCoupons($subtotal, $currentUserId, $cart, $userEmail, $userPhone);
         $appliedCoupon = $_SESSION['applied_coupon'] ?? null;
 
         $currentUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
@@ -154,8 +156,11 @@ class CheckoutController extends BaseController {
 
         require_once __DIR__ . '/../models/Coupon.php';
         $couponModel = new Coupon();
-        $currentUserId = !empty($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null;
-        $result = $couponModel->checkAndCalculate($code, $subtotal, $currentUserId, $cart);
+        $currentUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
+        $currentUserId = !empty($currentUser['id']) ? (int)$currentUser['id'] : null;
+        $userEmail = !empty($currentUser['email']) ? (string)$currentUser['email'] : null;
+        $userPhone = !empty($currentUser['phone']) ? (string)$currentUser['phone'] : null;
+        $result = $couponModel->checkAndCalculate($code, $subtotal, $currentUserId, $cart, $userEmail, $userPhone);
 
         if ($result['valid']) {
             $_SESSION['applied_coupon'] = $result['coupon'];
@@ -299,7 +304,9 @@ class CheckoutController extends BaseController {
         // (trước đây lấy thẳng số tiền giảm lưu trong session, có thể đã cũ nếu giỏ hàng thay đổi ở tab khác)
         if (!empty($_SESSION['applied_coupon']['code'])) {
             require_once __DIR__ . '/../models/Coupon.php';
-            $recheck = (new Coupon())->checkAndCalculate($_SESSION['applied_coupon']['code'], (float)$subtotal, !empty($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null, array_values($cart));
+            $currUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
+            $chkUid = !empty($currUser['id']) ? (int)$currUser['id'] : null;
+            $recheck = (new Coupon())->checkAndCalculate($_SESSION['applied_coupon']['code'], (float)$subtotal, $chkUid, array_values($cart), $email, $phone);
             if (!empty($recheck['valid'])) {
                 $discount = (float)$recheck['discount'];
             } else {
@@ -378,9 +385,7 @@ class CheckoutController extends BaseController {
         ];
 
         // Dọn dẹp mã khuyến mại sau khi đã trừ thành công trong createOrder
-        if (!empty($_SESSION['applied_coupon'])) {
-            unset($_SESSION['applied_coupon']);
-        }
+        unset($_SESSION['applied_coupon'], $_SESSION['discount_amount'], $_SESSION['coupon_code'], $_SESSION['coupon_message']);
 
         // Dọn dẹp phiên mua hàng sau khi tạo đơn thành công
         if ($isBuyNow) {

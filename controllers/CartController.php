@@ -38,7 +38,10 @@ class CartController extends BaseController {
 
         require_once __DIR__ . '/../models/Coupon.php';
         $couponModel = new Coupon();
-        $userId = !empty($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null;
+        $currUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
+        $userId = !empty($currUser['id']) ? (int)$currUser['id'] : null;
+        $userEmail = !empty($currUser['email']) ? (string)$currUser['email'] : null;
+        $userPhone = !empty($currUser['phone']) ? (string)$currUser['phone'] : null;
         $cartItems = [];
         if (!empty($_SESSION['is_buy_now']) && !empty($_SESSION['buy_now_item'])) {
             $cartItems = [$_SESSION['buy_now_item']];
@@ -50,7 +53,7 @@ class CartController extends BaseController {
             }
         }
 
-        $res = $couponModel->checkAndCalculate($_SESSION['applied_coupon']['code'], $subtotal, $userId, $cartItems);
+        $res = $couponModel->checkAndCalculate($_SESSION['applied_coupon']['code'], $subtotal, $userId, $cartItems, $userEmail, $userPhone);
         if ($res['valid']) {
             $_SESSION['applied_coupon'] = $res['coupon'];
             $_SESSION['discount_amount'] = (float)$res['discount'];
@@ -154,8 +157,11 @@ class CartController extends BaseController {
 
         require_once __DIR__ . '/../models/Coupon.php';
         $couponModel = new Coupon();
-        $currentUserId = !empty($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null;
-        $availableCoupons = $couponModel->getAvailableCoupons($selectedSubtotal, $currentUserId, $cart);
+        $currUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
+        $currentUserId = !empty($currUser['id']) ? (int)$currUser['id'] : null;
+        $userEmail = !empty($currUser['email']) ? (string)$currUser['email'] : null;
+        $userPhone = !empty($currUser['phone']) ? (string)$currUser['phone'] : null;
+        $availableCoupons = $couponModel->getAvailableCoupons($selectedSubtotal, $currentUserId, $cart, $userEmail, $userPhone);
 
         $this->render('cart/index', [
             'pageTitle' => 'Giỏ hàng của bạn',
@@ -570,8 +576,11 @@ class CartController extends BaseController {
 
         require_once __DIR__ . '/../models/Coupon.php';
         $couponModel = new Coupon();
-        $userId = !empty($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null;
-        $res = $couponModel->checkAndCalculate($code, $subtotal, $userId, $cart);
+        $currUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
+        $userId = !empty($currUser['id']) ? (int)$currUser['id'] : null;
+        $userEmail = !empty($currUser['email']) ? (string)$currUser['email'] : null;
+        $userPhone = !empty($currUser['phone']) ? (string)$currUser['phone'] : null;
+        $res = $couponModel->checkAndCalculate($code, $subtotal, $userId, $cart, $userEmail, $userPhone);
 
         if ($res['valid']) {
             $_SESSION['coupon_code'] = $res['coupon']['code'];

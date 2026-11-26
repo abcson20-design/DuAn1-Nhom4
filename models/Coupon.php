@@ -30,23 +30,50 @@ class Coupon extends BaseModel {
     }
 
     /**
-     * Kiểm tra xem tài khoản này đã từng dùng mã voucher này trong một đơn hàng thành công/đang xử lý hay chưa
-     * Quy tắc: Voucher chỉ áp dụng mỗi tài khoản 1 lần thanh toán
+     * Kiểm tra xem khách hàng này đã từng dùng mã voucher này trong một đơn hàng thành công/đang xử lý hay chưa
+     * Quy tắc: Voucher chỉ áp dụng mỗi tài khoản / khách hàng 1 lần thanh toán
      */
-    public function hasUserUsedCoupon(string $code, int $userId): bool {
-        if ($userId <= 0 || empty($code)) {
+    public function hasUserUsedCoupon(string $code, ?int $userId = null, ?string $email = null, ?string $phone = null): bool {
+        $userId = ($userId !== null && $userId > 0) ? $userId : null;
+        $email = !empty($email) ? trim($email) : null;
+        $phone = !empty($phone) ? trim($phone) : null;
+
+        if ($userId === null && $email === null && $phone === null) {
             return false;
         }
+        if (empty($code)) {
+            return false;
+        }
+
         try {
+            $conditions = [];
+            $params = [];
+            $codeUpper = strtoupper(trim($code));
+
+            if ($userId !== null) {
+                $conditions[] = "user_id = ?";
+                $params[] = $userId;
+            }
+            if ($email !== null) {
+                $conditions[] = "LOWER(customer_email) = ?";
+                $params[] = strtolower($email);
+            }
+            if ($phone !== null) {
+                $conditions[] = "customer_phone = ?";
+                $params[] = $phone;
+            }
+
+            $userClause = implode(' OR ', $conditions);
             $stmt = $this->db->prepare("
                 SELECT COUNT(*) 
                 FROM orders 
-                WHERE user_id = ? 
+                WHERE ({$userClause}) 
                   AND UPPER(coupon_code) = ? 
                   AND order_status != 'cancelled' 
                   AND deleted_at IS NULL
             ");
-            $stmt->execute([$userId, strtoupper(trim($code))]);
+            $params[] = $codeUpper;
+            $stmt->execute($params);
             return (int)$stmt->fetchColumn() > 0;
         } catch (Throwable $e) {
             error_log('[Coupon] hasUserUsedCoupon: ' . $e->getMessage());
@@ -83,8 +110,9 @@ class Coupon extends BaseModel {
 
     /**
      * Lấy danh sách các mã khuyến mại có thể sử dụng (hợp lệ cho khách chọn)
+     * Tự động xóa (loại bỏ) các mã mà khách hàng đã từng dùng cho 1 đơn hàng trước đó
      */
-    public function getAvailableCoupons(float $orderAmount = 0, ?int $userId = null, array $cartItems = []): array {
+    public function getAvailableCoupons(float $orderAmount = 0, ?int $userId = null, array $cartItems = [], ?string $email = null, ?string $phone = null): array {
         $stmt = $this->db->query("
             SELECT c.*, 
                    cat.name as category_name, 
@@ -100,16 +128,22 @@ class Coupon extends BaseModel {
             ORDER BY c.min_order_amount ASC, c.id DESC
         ");
         $list = $stmt->fetchAll();
+        $availableList = [];
 
-        foreach ($list as &$c) {
+        foreach ($list as $c) {
             $alreadyUsed = false;
-            if ($userId !== null && $userId > 0) {
-                $alreadyUsed = $this->hasUserUsedCoupon($c['code'], $userId);
+            if (($userId !== null && $userId > 0) || !empty($email) || !empty($phone)) {
+                $alreadyUsed = $this->hasUserUsedCoupon($c['code'], $userId, $email, $phone);
             }
-            $c['already_used'] = $alreadyUsed;
+
+            // Tự động xóa (loại bỏ hoàn toàn) mã này khỏi danh sách phía khách hàng nếu đã từng dùng
+            if ($alreadyUsed) {
+                continue;
+            }
 
             // Kiểm tra tính hợp lệ và ước tính mức giảm
-            $check = $this->checkAndCalculate($c['code'], $orderAmount, $userId, $cartItems);
+            $check = $this->checkAndCalculate($c['code'], $orderAmount, $userId, $cartItems, $email, $phone);
+            $c['already_used'] = false;
             $c['is_eligible'] = $check['valid'];
             $c['eligibility_message'] = $check['message'] ?? '';
             $c['estimated_discount'] = $check['discount'] ?? 0;
@@ -123,10 +157,11 @@ class Coupon extends BaseModel {
             } else {
                 $c['scope_text'] = 'Áp dụng cho tất cả sản phẩm';
             }
-        }
-        unset($c);
 
-        return $list;
+            $availableList[] = $c;
+        }
+
+        return $availableList;
     }
 
     /**
@@ -134,7 +169,7 @@ class Coupon extends BaseModel {
      * Quy tắc 1: Mỗi tài khoản chỉ áp dụng mỗi voucher 1 lần thanh toán
      * Quy tắc 2: Phạm vi áp dụng (Tất cả, 1 Danh mục, hoặc 1 Sản phẩm cụ thể)
      */
-    public function checkAndCalculate(string $code, float $orderAmount, ?int $userId = null, array $cartItems = []): array {
+    public function checkAndCalculate(string $code, float $orderAmount, ?int $userId = null, array $cartItems = [], ?string $email = null, ?string $phone = null): array {
         $coupon = $this->getByCode($code);
         if (!$coupon) {
             return ['valid' => false, 'message' => 'Mã khuyến mại không tồn tại!'];
@@ -161,8 +196,8 @@ class Coupon extends BaseModel {
         }
 
         // Quy tắc 1: Mỗi tài khoản chỉ được áp dụng mỗi voucher 1 lần thanh toán
-        if ($userId !== null && $userId > 0) {
-            if ($this->hasUserUsedCoupon($code, $userId)) {
+        if (($userId !== null && $userId > 0) || !empty($email) || !empty($phone)) {
+            if ($this->hasUserUsedCoupon($code, $userId, $email, $phone)) {
                 return [
                     'valid' => false,
                     'message' => 'Bạn đã sử dụng mã voucher này rồi! Mỗi tài khoản chỉ được áp dụng 1 lần thanh toán.'

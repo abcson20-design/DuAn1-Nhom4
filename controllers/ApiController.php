@@ -417,9 +417,12 @@ class ApiController extends BaseController
             return;
         }
 
-        $userId = !empty($_SESSION['user']['id']) ? (int)$_SESSION['user']['id'] : null;
+        $currUser = $_SESSION['user'] ?? $_SESSION['admin_user'] ?? null;
+        $userId = !empty($currUser['id']) ? (int)$currUser['id'] : null;
+        $userEmail = !empty($currUser['email']) ? (string)$currUser['email'] : null;
+        $userPhone = !empty($currUser['phone']) ? (string)$currUser['phone'] : null;
         $couponModel = new Coupon();
-        $check = $couponModel->checkAndCalculate($code, $selectedSubtotal, $userId, $selectedItems);
+        $check = $couponModel->checkAndCalculate($code, $selectedSubtotal, $userId, $selectedItems, $userEmail, $userPhone);
 
         if ($check['valid']) {
             $_SESSION['applied_coupon'] = $check['coupon'];
